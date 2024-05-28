@@ -1,4 +1,4 @@
-#DEPLOIEMENT INFRA ...EN COURS DE DEVELOPPEMENT)
+# DEPLOIEMENT INFRA ...EN COURS DE DEVELOPPEMENT)
 provider "azurerm" {
     features {
     }
