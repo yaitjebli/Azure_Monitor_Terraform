@@ -37,7 +37,8 @@ resource "azurerm_subnet" "subnetlog" {
 
 # Création de l'interface réseau "wincard"
 resource "azurerm_network_interface" "logcard" {
-    name = "wincard"
+    count = 2
+    name = "wincard${count.index + 1}"
     location = azurerm_resource_group.rglog.location
     resource_group_name = azurerm_resource_group.rglog.name
 
@@ -50,14 +51,15 @@ resource "azurerm_network_interface" "logcard" {
 
 # Création de la machine virtuelle "WS-VM1"
 resource "azurerm_windows_virtual_machine" "vmlog" {
-    name = "WS-VM1"
+    count = 2
+    name = "WS-VM1${count.index + 1}"
     location = azurerm_resource_group.rglog.location
     resource_group_name = azurerm_resource_group.rglog.name
     size = "Standard_B2ms"
     admin_username = "prime"
     admin_password = "P@sswordP@ssword"
     network_interface_ids = [ 
-        azurerm_network_interface.logcard.id
+        element(azurerm_network_interface.logcard.*.id, count.index)
      ]
     
     os_disk {
@@ -111,3 +113,6 @@ resource "azurerm_linux_virtual_machine" "vm2" {
     version   = "latest"
   }
 }
+
+
+#Création d'une webapp
